@@ -88,6 +88,7 @@ if [[ "$CHOIX_SYNC" == "1" ]]; then
   git commit -m "[ArgoCD] Mise à jour $NOM_APP pour correspondre à l'état du cluster"
   git push origin "$NOM_BRANCHE"
 
+  argocd app sync "$NOM_APP"
   echo "[SUCCÈS] Git mis à jour avec l'état du cluster (champs managés filtrés)."
   rm "$FICHIER_TEMP"
 
