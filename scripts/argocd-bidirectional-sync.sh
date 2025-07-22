@@ -138,7 +138,7 @@ if [[ "$CHOIX_SYNC" == "1" ]]; then
   if ! git rev-parse --verify "$NOM_BRANCHE" >/dev/null 2>&1; then
     echo "[ERREUR] La branche $NOM_BRANCHE n'existe pas."
     exit 1
-  }
+  fi
 
   git checkout "$NOM_BRANCHE" || {
     echo "[ERREUR] Échec du checkout de la branche $NOM_BRANCHE"
@@ -151,7 +151,7 @@ if [[ "$CHOIX_SYNC" == "1" ]]; then
 
   # Mettre à jour le manifeste
   CHEMIN_MANIFEST_APP="./manifests/base/${NOM_APP}.yaml"
-  mkdir -s "$(dirname "$CHEMIN_MANIFEST_APP")"
+  mkdir -p "$(dirname "$CHEMIN_MANIFEST_APP")"
   cp "$FICHIER_TEMP_FILTERED" "$CHEMIN_MANIFEST_APP" || {
     echo "[ERREUR] Échec de la copie du manifeste vers $CHEMIN_MANIFEST_APP"
     exit 1
@@ -168,7 +168,7 @@ if [[ "$CHOIX_SYNC" == "1" ]]; then
     exit 1
   }
 
-  echo "[SUCCÈS] Git mis à jour avec l'état du cluster."
+  echo "[SUCCÈS] Git mises à jour avec l'état du cluster."
 
 elif [[ "$CHOIX_SYNC" == "2" ]]; then
   echo "[INFO] Synchronisation Git → Argo CD en cours..."
