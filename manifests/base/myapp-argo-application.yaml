@@ -7,8 +7,8 @@ metadata:
   annotations:
     argocd.argoproj.io/tracking-id: myapp-argo-application:/ConfigMap:dev/mongo-config
     kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"v1","data":{"mongo-url":"mongo-service"},"kind":"ConfigMap","metadata":{"annotations":{"argocd.argoproj.io/tracking-id":"myapp-argo-application:/ConfigMap:dev/mongo-config"},"name":"mongo-config","namespace":"dev"}}
-  creationTimestamp: "2025-07-22T17:26:57Z"
+      {"apiVersion":"v1","data":{"mongo-url":"mongo-service"},"kind":"ConfigMap","metadata":{"annotations":{"argocd.argoproj.io/tracking-id":"myapp-argo-application:/ConfigMap:dev/mongo-config"},"creationTimestamp":"2025-07-22T17:26:57Z","managedFields":[{"apiVersion":"v1","fieldsType":"FieldsV1","fieldsV1":{"f:data":{".":{},"f:mongo-url":{}},"f:metadata":{"f:annotations":{".":{},"f:argocd.argoproj.io/tracking-id":{},"f:kubectl.kubernetes.io/last-applied-configuration":{}}}},"manager":"argocd-controller","operation":"Update","time":"2025-07-22T17:26:57Z"}],"name":"mongo-config","namespace":"dev","resourceVersion":"2866","uid":"b85194c9-5840-4ca8-8bd0-090481fdf0de"}}
+  creationTimestamp: "2025-07-22T18:49:31Z"
   managedFields:
   - apiVersion: v1
     fieldsType: FieldsV1
@@ -23,11 +23,11 @@ metadata:
           f:kubectl.kubernetes.io/last-applied-configuration: {}
     manager: argocd-controller
     operation: Update
-    time: "2025-07-22T17:26:57Z"
+    time: "2025-07-22T18:49:31Z"
   name: mongo-config
   namespace: dev
-  resourceVersion: "2866"
-  uid: b85194c9-5840-4ca8-8bd0-090481fdf0de
+  resourceVersion: "7476"
+  uid: fc59ce69-ed77-403d-80c4-08daf833c7c5
 
 ---
 apiVersion: v1
@@ -38,8 +38,8 @@ kind: Secret
 metadata:
   annotations:
     argocd.argoproj.io/tracking-id: myapp-argo-application:/Secret:dev/mongo-secret
-    kubectl.kubernetes.io/last-applied-configuration: '{"apiVersion":"v1","data":{"mongo-password":"++++++++","mongo-user":"++++++++"},"kind":"Secret","metadata":{"annotations":{"argocd.argoproj.io/tracking-id":"myapp-argo-application:/Secret:dev/mongo-secret"},"name":"mongo-secret","namespace":"dev"},"type":"opaque"}'
-  creationTimestamp: "2025-07-22T17:26:57Z"
+    kubectl.kubernetes.io/last-applied-configuration: '{"apiVersion":"v1","data":{"mongo-password":"++++++++","mongo-user":"++++++++"},"kind":"Secret","metadata":{"annotations":{"argocd.argoproj.io/tracking-id":"myapp-argo-application:/Secret:dev/mongo-secret"},"creationTimestamp":"2025-07-22T17:26:57Z","managedFields":[{"apiVersion":"v1","fieldsType":"FieldsV1","fieldsV1":{"f:data":{".":{},"f:mongo-password":{},"f:mongo-user":{}},"f:metadata":{"f:annotations":{".":{},"f:argocd.argoproj.io/tracking-id":{},"f:kubectl.kubernetes.io/last-applied-configuration":{}}},"f:type":{}},"manager":"argocd-controller","operation":"Update","time":"2025-07-22T17:26:57Z"}],"name":"mongo-secret","namespace":"dev","resourceVersion":"2865","uid":"54236584-c85c-4de5-bafb-e205c3c2aaef"},"type":"opaque"}'
+  creationTimestamp: "2025-07-22T18:49:27Z"
   managedFields:
   - apiVersion: v1
     fieldsType: FieldsV1
@@ -56,11 +56,11 @@ metadata:
       f:type: {}
     manager: argocd-controller
     operation: Update
-    time: "2025-07-22T17:26:57Z"
+    time: "2025-07-22T18:49:27Z"
   name: mongo-secret
   namespace: dev
-  resourceVersion: "2865"
-  uid: 54236584-c85c-4de5-bafb-e205c3c2aaef
+  resourceVersion: "7467"
+  uid: f698bad4-dff8-408e-abc5-4e1858197733
 type: opaque
 
 ---
@@ -70,8 +70,8 @@ metadata:
   annotations:
     argocd.argoproj.io/tracking-id: myapp-argo-application:/Service:dev/mongo-service
     kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{"argocd.argoproj.io/tracking-id":"myapp-argo-application:/Service:dev/mongo-service"},"name":"mongo-service","namespace":"dev"},"spec":{"ports":[{"port":27017,"protocol":"TCP","targetPort":27017}],"selector":{"app":"mongo"}}}
-  creationTimestamp: "2025-07-22T17:26:57Z"
+      {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{"argocd.argoproj.io/tracking-id":"myapp-argo-application:/Service:dev/mongo-service"},"creationTimestamp":"2025-07-22T17:26:57Z","managedFields":[{"apiVersion":"v1","fieldsType":"FieldsV1","fieldsV1":{"f:metadata":{"f:annotations":{".":{},"f:argocd.argoproj.io/tracking-id":{},"f:kubectl.kubernetes.io/last-applied-configuration":{}}},"f:spec":{"f:internalTrafficPolicy":{},"f:ports":{".":{},"k:{\"port\":27017,\"protocol\":\"TCP\"}":{".":{},"f:port":{},"f:protocol":{},"f:targetPort":{}}},"f:selector":{},"f:sessionAffinity":{},"f:type":{}}},"manager":"argocd-controller","operation":"Update","time":"2025-07-22T17:26:57Z"}],"name":"mongo-service","namespace":"dev","resourceVersion":"2871","uid":"678758e0-cf5c-4948-980c-f83e892524e5"},"spec":{"clusterIP":"10.107.234.23","clusterIPs":["10.107.234.23"],"internalTrafficPolicy":"Cluster","ipFamilies":["IPv4"],"ipFamilyPolicy":"SingleStack","ports":[{"port":27017,"protocol":"TCP","targetPort":27017}],"selector":{"app":"mongo"},"sessionAffinity":"None","type":"ClusterIP"},"status":{"loadBalancer":{}}}
+  creationTimestamp: "2025-07-22T18:49:36Z"
   managedFields:
   - apiVersion: v1
     fieldsType: FieldsV1
@@ -82,7 +82,11 @@ metadata:
           f:argocd.argoproj.io/tracking-id: {}
           f:kubectl.kubernetes.io/last-applied-configuration: {}
       f:spec:
+        f:clusterIP: {}
+        f:clusterIPs: {}
         f:internalTrafficPolicy: {}
+        f:ipFamilies: {}
+        f:ipFamilyPolicy: {}
         f:ports:
           .: {}
           k:{"port":27017,"protocol":"TCP"}:
@@ -95,11 +99,11 @@ metadata:
         f:type: {}
     manager: argocd-controller
     operation: Update
-    time: "2025-07-22T17:26:57Z"
+    time: "2025-07-22T18:49:36Z"
   name: mongo-service
   namespace: dev
-  resourceVersion: "2871"
-  uid: 678758e0-cf5c-4948-980c-f83e892524e5
+  resourceVersion: "7493"
+  uid: 89903698-ea90-4752-aa60-347ce4e80ba0
 spec:
   clusterIP: 10.107.234.23
   clusterIPs:
@@ -187,8 +191,8 @@ metadata:
     argocd.argoproj.io/tracking-id: myapp-argo-application:apps/Deployment:dev/mongo-deployment
     deployment.kubernetes.io/revision: "1"
     kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{"argocd.argoproj.io/tracking-id":"myapp-argo-application:apps/Deployment:dev/mongo-deployment"},"labels":{"app":"mongo"},"name":"mongo-deployment","namespace":"dev"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"mongo"}},"template":{"metadata":{"labels":{"app":"mongo"}},"spec":{"containers":[{"env":[{"name":"MONGO_INITDB_ROOT_USERNAME","valueFrom":{"secretKeyRef":{"key":"mongo-user","name":"mongo-secret"}}},{"name":"MONGO_INITDB_ROOT_PASSWORD","valueFrom":{"secretKeyRef":{"key":"mongo-password","name":"mongo-secret"}}}],"image":"mongo:5.0","name":"mongodb","ports":[{"containerPort":27017}]}]}}}}
-  creationTimestamp: "2025-07-22T17:26:58Z"
+      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{"argocd.argoproj.io/tracking-id":"myapp-argo-application:apps/Deployment:dev/mongo-deployment","deployment.kubernetes.io/revision":"1"},"creationTimestamp":"2025-07-22T17:26:58Z","generation":1,"labels":{"app":"mongo"},"managedFields":[{"apiVersion":"apps/v1","fieldsType":"FieldsV1","fieldsV1":{"f:metadata":{"f:annotations":{".":{},"f:argocd.argoproj.io/tracking-id":{},"f:kubectl.kubernetes.io/last-applied-configuration":{}},"f:labels":{".":{},"f:app":{}}},"f:spec":{"f:progressDeadlineSeconds":{},"f:replicas":{},"f:revisionHistoryLimit":{},"f:selector":{},"f:strategy":{"f:rollingUpdate":{".":{},"f:maxSurge":{},"f:maxUnavailable":{}},"f:type":{}},"f:template":{"f:metadata":{"f:labels":{".":{},"f:app":{}}},"f:spec":{"f:containers":{"k:{\"name\":\"mongodb\"}":{".":{},"f:env":{".":{},"k:{\"name\":\"MONGO_INITDB_ROOT_PASSWORD\"}":{".":{},"f:name":{},"f:valueFrom":{".":{},"f:secretKeyRef":{}}},"k:{\"name\":\"MONGO_INITDB_ROOT_USERNAME\"}":{".":{},"f:name":{},"f:valueFrom":{".":{},"f:secretKeyRef":{}}}},"f:image":{},"f:imagePullPolicy":{},"f:name":{},"f:ports":{".":{},"k:{\"containerPort\":27017,\"protocol\":\"TCP\"}":{".":{},"f:containerPort":{},"f:protocol":{}}},"f:resources":{},"f:terminationMessagePath":{},"f:terminationMessagePolicy":{}}},"f:dnsPolicy":{},"f:restartPolicy":{},"f:schedulerName":{},"f:securityContext":{},"f:terminationGracePeriodSeconds":{}}}}},"manager":"argocd-controller","operation":"Update","time":"2025-07-22T17:26:58Z"},{"apiVersion":"apps/v1","fieldsType":"FieldsV1","fieldsV1":{"f:metadata":{"f:annotations":{"f:deployment.kubernetes.io/revision":{}}},"f:status":{"f:availableReplicas":{},"f:conditions":{".":{},"k:{\"type\":\"Available\"}":{".":{},"f:lastTransitionTime":{},"f:lastUpdateTime":{},"f:message":{},"f:reason":{},"f:status":{},"f:type":{}},"k:{\"type\":\"Progressing\"}":{".":{},"f:lastTransitionTime":{},"f:lastUpdateTime":{},"f:message":{},"f:reason":{},"f:status":{},"f:type":{}}},"f:observedGeneration":{},"f:readyReplicas":{},"f:replicas":{},"f:updatedReplicas":{}}},"manager":"kube-controller-manager","operation":"Update","subresource":"status","time":"2025-07-22T18:05:09Z"}],"name":"mongo-deployment","namespace":"dev","resourceVersion":"4794","uid":"89c4256f-2617-459b-b24c-4b2c7bf5169b"},"spec":{"progressDeadlineSeconds":600,"replicas":1,"revisionHistoryLimit":10,"selector":{"matchLabels":{"app":"mongo"}},"strategy":{"rollingUpdate":{"maxSurge":"25%","maxUnavailable":"25%"},"type":"RollingUpdate"},"template":{"metadata":{"creationTimestamp":null,"labels":{"app":"mongo"}},"spec":{"containers":[{"env":[{"name":"MONGO_INITDB_ROOT_USERNAME","valueFrom":{"secretKeyRef":{"key":"mongo-user","name":"mongo-secret"}}},{"name":"MONGO_INITDB_ROOT_PASSWORD","valueFrom":{"secretKeyRef":{"key":"mongo-password","name":"mongo-secret"}}}],"image":"mongo:5.0","imagePullPolicy":"IfNotPresent","name":"mongodb","ports":[{"containerPort":27017,"protocol":"TCP"}],"resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File"}],"dnsPolicy":"ClusterFirst","restartPolicy":"Always","schedulerName":"default-scheduler","securityContext":{},"terminationGracePeriodSeconds":30}}},"status":{"availableReplicas":1,"conditions":[{"lastTransitionTime":"2025-07-22T18:05:09Z","lastUpdateTime":"2025-07-22T18:05:09Z","message":"Deployment has minimum availability.","reason":"MinimumReplicasAvailable","status":"True","type":"Available"},{"lastTransitionTime":"2025-07-22T18:05:09Z","lastUpdateTime":"2025-07-22T18:05:09Z","message":"ReplicaSet \"mongo-deployment-7cccf8b6d8\" has successfully progressed.","reason":"NewReplicaSetAvailable","status":"True","type":"Progressing"}],"observedGeneration":1,"readyReplicas":1,"replicas":1,"updatedReplicas":1}}
+  creationTimestamp: "2025-07-22T18:49:40Z"
   generation: 1
   labels:
     app: mongo
@@ -200,6 +204,7 @@ metadata:
         f:annotations:
           .: {}
           f:argocd.argoproj.io/tracking-id: {}
+          f:deployment.kubernetes.io/revision: {}
           f:kubectl.kubernetes.io/last-applied-configuration: {}
         f:labels:
           .: {}
@@ -257,15 +262,11 @@ metadata:
             f:terminationGracePeriodSeconds: {}
     manager: argocd-controller
     operation: Update
-    time: "2025-07-22T17:26:58Z"
+    time: "2025-07-22T18:49:40Z"
   - apiVersion: apps/v1
     fieldsType: FieldsV1
     fieldsV1:
-      f:metadata:
-        f:annotations:
-          f:deployment.kubernetes.io/revision: {}
       f:status:
-        f:availableReplicas: {}
         f:conditions:
           .: {}
           k:{"type":"Available"}:
@@ -285,17 +286,17 @@ metadata:
             f:status: {}
             f:type: {}
         f:observedGeneration: {}
-        f:readyReplicas: {}
         f:replicas: {}
+        f:unavailableReplicas: {}
         f:updatedReplicas: {}
     manager: kube-controller-manager
     operation: Update
     subresource: status
-    time: "2025-07-22T18:05:09Z"
+    time: "2025-07-22T19:17:34Z"
   name: mongo-deployment
   namespace: dev
-  resourceVersion: "4794"
-  uid: 89c4256f-2617-459b-b24c-4b2c7bf5169b
+  resourceVersion: "9135"
+  uid: 63aafb81-a210-4a9c-abaf-e4096ddc86f9
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -341,23 +342,22 @@ spec:
       securityContext: {}
       terminationGracePeriodSeconds: 30
 status:
-  availableReplicas: 1
   conditions:
-  - lastTransitionTime: "2025-07-22T18:05:09Z"
-    lastUpdateTime: "2025-07-22T18:05:09Z"
-    message: Deployment has minimum availability.
-    reason: MinimumReplicasAvailable
-    status: "True"
-    type: Available
-  - lastTransitionTime: "2025-07-22T18:05:09Z"
-    lastUpdateTime: "2025-07-22T18:05:09Z"
+  - lastTransitionTime: "2025-07-22T18:49:40Z"
+    lastUpdateTime: "2025-07-22T18:49:45Z"
     message: ReplicaSet "mongo-deployment-7cccf8b6d8" has successfully progressed.
     reason: NewReplicaSetAvailable
     status: "True"
     type: Progressing
+  - lastTransitionTime: "2025-07-22T19:17:34Z"
+    lastUpdateTime: "2025-07-22T19:17:34Z"
+    message: Deployment does not have minimum availability.
+    reason: MinimumReplicasUnavailable
+    status: "False"
+    type: Available
   observedGeneration: 1
-  readyReplicas: 1
   replicas: 1
+  unavailableReplicas: 1
   updatedReplicas: 1
 
 ---
@@ -368,9 +368,9 @@ metadata:
     argocd.argoproj.io/tracking-id: myapp-argo-application:apps/Deployment:dev/webapp-deployment
     deployment.kubernetes.io/revision: "1"
     kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{"argocd.argoproj.io/tracking-id":"myapp-argo-application:apps/Deployment:dev/webapp-deployment"},"labels":{"app":"webapp"},"name":"webapp-deployment","namespace":"dev"},"spec":{"replicas":3,"selector":{"matchLabels":{"app":"webapp"}},"template":{"metadata":{"labels":{"app":"webapp"}},"spec":{"containers":[{"env":[{"name":"USER_NAME","valueFrom":{"secretKeyRef":{"key":"mongo-user","name":"mongo-secret"}}},{"name":"USER_PWD","valueFrom":{"secretKeyRef":{"key":"mongo-password","name":"mongo-secret"}}},{"name":"DB_URL","valueFrom":{"configMapKeyRef":{"key":"mongo-url","name":"mongo-config"}}}],"image":"nanajanashia/k8s-demo-app:v1.0","name":"webapp","ports":[{"containerPort":3000}]}]}}}}
+      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{"argocd.argoproj.io/tracking-id":"myapp-argo-application:apps/Deployment:dev/webapp-deployment"},"labels":{"app":"webapp"},"name":"webapp-deployment","namespace":"dev"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"webapp"}},"template":{"metadata":{"labels":{"app":"webapp"}},"spec":{"containers":[{"env":[{"name":"USER_NAME","valueFrom":{"secretKeyRef":{"key":"mongo-user","name":"mongo-secret"}}},{"name":"USER_PWD","valueFrom":{"secretKeyRef":{"key":"mongo-password","name":"mongo-secret"}}},{"name":"DB_URL","valueFrom":{"configMapKeyRef":{"key":"mongo-url","name":"mongo-config"}}}],"image":"nanajanashia/k8s-demo-app:v1.0","name":"webapp","ports":[{"containerPort":3000}]}]}}}}
   creationTimestamp: "2025-07-22T17:26:58Z"
-  generation: 3
+  generation: 4
   labels:
     app: webapp
   managedFields:
@@ -444,7 +444,7 @@ metadata:
             f:terminationGracePeriodSeconds: {}
     manager: argocd-controller
     operation: Update
-    time: "2025-07-22T18:30:10Z"
+    time: "2025-07-22T18:44:59Z"
   - apiVersion: apps/v1
     fieldsType: FieldsV1
     fieldsV1:
@@ -478,14 +478,14 @@ metadata:
     manager: kube-controller-manager
     operation: Update
     subresource: status
-    time: "2025-07-22T18:30:16Z"
+    time: "2025-07-22T18:45:01Z"
   name: webapp-deployment
   namespace: dev
-  resourceVersion: "6316"
+  resourceVersion: "7062"
   uid: 23a1574b-abc5-4fa7-a081-df5955a7059e
 spec:
   progressDeadlineSeconds: 600
-  replicas: 3
+  replicas: 1
   revisionHistoryLimit: 10
   selector:
     matchLabels:
@@ -533,7 +533,7 @@ spec:
       securityContext: {}
       terminationGracePeriodSeconds: 30
 status:
-  availableReplicas: 3
+  availableReplicas: 1
   conditions:
   - lastTransitionTime: "2025-07-22T18:05:13Z"
     lastUpdateTime: "2025-07-22T18:05:16Z"
@@ -547,7 +547,7 @@ status:
     reason: MinimumReplicasAvailable
     status: "True"
     type: Available
-  observedGeneration: 3
-  readyReplicas: 3
-  replicas: 3
-  updatedReplicas: 3
+  observedGeneration: 4
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1
