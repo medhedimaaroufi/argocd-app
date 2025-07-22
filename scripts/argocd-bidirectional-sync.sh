@@ -39,7 +39,7 @@ if [[ "$CHOIX_SYNC" == "1" ]]; then
   git checkout "$NOM_BRANCHE"
   git pull origin "$NOM_BRANCHE"
 
-  CHEMIN_MANIFEST_APP="./manifests/${NOM_APP}.yaml"
+  CHEMIN_MANIFEST_APP="./manifests/base/${NOM_APP}.yaml"
   cp "$FICHIER_TEMP" "$CHEMIN_MANIFEST_APP"
 
   git add "$CHEMIN_MANIFEST_APP"
