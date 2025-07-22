@@ -16,6 +16,18 @@ filter_managed_fields() {
     yq eval 'del(.spec.template.metadata.annotations."kubectl.kubernetes.io/restartedAt")' -
 }
 
+archive_manifests(){
+  TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+  ARCHIVE_NAME="manifests_$TIMESTAMP.tar.gz"
+  ROLLBACK_DIR="../rollback"
+
+  mkdir -p "$ROLLBACK_DIR"
+
+  tar -czf "$ROLLBACK_DIR/$ARCHIVE_NAME" -C .. manifests/
+
+  echo "Manifests archived as $ROLLBACK_DIR/$ARCHIVE_NAME"
+}
+
 if [ $# -lt 2 ]; then
   echo "Usage : $0 <nom_app> <chemin_repo_git> [nom_branche]"
   exit 1
@@ -65,7 +77,7 @@ if [[ "$CHOIX_SYNC" == "1" ]]; then
   git checkout "$NOM_BRANCHE"
   git pull origin "$NOM_BRANCHE"
 
-  ./scripts/archive_manifests.sh
+  archive_manifests
   rm -r ./manifests/base
   mkdir -p ./manifests/base
 
