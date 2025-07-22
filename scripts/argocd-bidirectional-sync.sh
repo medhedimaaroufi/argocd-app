@@ -84,7 +84,7 @@ if [[ "$CHOIX_SYNC" == "1" ]]; then
   CHEMIN_MANIFEST_APP="./manifests/base/${NOM_APP}.yaml"
   cp "$FICHIER_TEMP" "$CHEMIN_MANIFEST_APP"
 
-  git add "$CHEMIN_MANIFEST_APP"
+  git add -A
   git commit -m "[ArgoCD] Mise à jour $NOM_APP pour correspondre à l'état du cluster"
   git push origin "$NOM_BRANCHE"
 
