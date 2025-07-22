@@ -23,7 +23,7 @@ archive_manifests(){
 
   mkdir -p "$ROLLBACK_DIR"
 
-  tar -czf "$ROLLBACK_DIR/$ARCHIVE_NAME" -C .. manifests/
+  tar -czf "$ROLLBACK_DIR/$ARCHIVE_NAME" -C ../.. manifests/
 
   echo "Manifests archived as $ROLLBACK_DIR/$ARCHIVE_NAME"
 }
