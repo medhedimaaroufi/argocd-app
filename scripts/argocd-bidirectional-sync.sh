@@ -1,4 +1,20 @@
+#!/bin/bash
 set -euo pipefail
+
+# Function to filter out Kubernetes-managed fields
+filter_managed_fields() {
+  local manifest="$1"
+  echo "$manifest" | yq eval 'del(.metadata.managedFields)' - | \
+    yq eval 'del(.metadata.annotations."kubectl.kubernetes.io/last-applied-configuration")' - | \
+    yq eval 'del(.metadata.creationTimestamp)' - | \
+    yq eval 'del(.metadata.generation)' - | \
+    yq eval 'del(.metadata.resourceVersion)' - | \
+    yq eval 'del(.metadata.selfLink)' - | \
+    yq eval 'del(.metadata.uid)' - | \
+    yq eval 'del(.status)' - | \
+    yq eval 'del(.metadata.annotations."deployment.kubernetes.io/revision")' - | \
+    yq eval 'del(.spec.template.metadata.annotations."kubectl.kubernetes.io/restartedAt")' -
+}
 
 if [ $# -lt 2 ]; then
   echo "Usage : $0 <nom_app> <chemin_repo_git> [nom_branche]"
@@ -8,6 +24,13 @@ fi
 NOM_APP="$1"
 CHEMIN_REPO_GIT="$2"
 NOM_BRANCHE="${3:-master}"
+
+# Check if yq is installed
+if ! command -v yq &> /dev/null; then
+  echo "[ERREUR] yq doit être installé pour exécuter ce script."
+  echo "Installez-le avec: brew install yq ou sudo apt-get install yq"
+  exit 1
+fi
 
 echo "[QUESTION] Choisissez la direction de synchronisation :"
 echo "1) Synchroniser Argo CD (cluster) → Git (sauvegarder les changements manuels dans Git)"
@@ -24,14 +47,19 @@ if [[ "$CHOIX_SYNC" == "1" ]]; then
 
   MANIFEST_LIVE=$(argocd app manifests "$NOM_APP" --source=live)
   MANIFEST_GIT=$(argocd app manifests "$NOM_APP" --source=git)
+  
+  # Filter managed fields from live manifest for comparison
+  FILTERED_LIVE=$(filter_managed_fields "$MANIFEST_LIVE")
+  FILTERED_GIT=$(filter_managed_fields "$MANIFEST_GIT")
 
-  if diff -u <(echo "$MANIFEST_GIT") <(echo "$MANIFEST_LIVE") > /dev/null; then
+  if diff -u <(echo "$FILTERED_GIT") <(echo "$FILTERED_LIVE") > /dev/null; then
     echo "[INFO] Aucune différence détectée. Git et le cluster sont synchronisés."
     exit 0
   fi
 
   FICHIER_TEMP=$(mktemp)
-  echo "$MANIFEST_LIVE" > "$FICHIER_TEMP"
+  # Store filtered manifest in temp file
+  echo "$FILTERED_LIVE" > "$FICHIER_TEMP"
 
   cd "$CHEMIN_REPO_GIT" || exit 1
   git checkout "$NOM_BRANCHE"
@@ -44,7 +72,7 @@ if [[ "$CHOIX_SYNC" == "1" ]]; then
   git commit -m "[ArgoCD] Mise à jour $NOM_APP pour correspondre à l'état du cluster"
   git push origin "$NOM_BRANCHE"
 
-  echo "[SUCCÈS] Git mis à jour avec l'état du cluster."
+  echo "[SUCCÈS] Git mis à jour avec l'état du cluster (champs managés filtrés)."
   rm "$FICHIER_TEMP"
 
 elif [[ "$CHOIX_SYNC" == "2" ]]; then
