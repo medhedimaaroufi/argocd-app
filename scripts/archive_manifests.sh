@@ -1,4 +1,3 @@
-#!/bin/bash
 
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 ARCHIVE_NAME="manifests_$TIMESTAMP.tar.gz"
