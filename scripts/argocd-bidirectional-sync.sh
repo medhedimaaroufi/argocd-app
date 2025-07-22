@@ -166,7 +166,7 @@ if [[ "$CHOIX_SYNC" == "1" ]]; then
   if ! git push origin "$NOM_BRANCHE"; then
     echo "[ERREUR] Échec du push vers $NOM_BRANCHE"
     exit 1
-  }
+  fi
 
   echo "[SUCCÈS] Git mises à jour avec l'état du cluster."
 
