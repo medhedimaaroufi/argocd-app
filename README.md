@@ -1,18 +1,101 @@
-# REPO-CONFIG_INITIAL-SCRIPT_V1_16-07-2025
+# Scripts Sync et Rollback ArgoCD
 
-## Introduction
-Ce dépôt contient des scripts et des manifests de configuration pour la gestion des applications avec Argo CD. Il a été conçu pour faciliter la synchronisation bidirectionnelle entre Git et le cluster, ainsi que l'archivage des manifests pour des opérations de rollback.
+Scripts et configurations pour la gestion des déploiements ArgoCD et rollback
 
-## Fonctionnalités
-- **Synchronisation bidirectionnelle** : Permet de synchroniser Argo CD (cluster) vers Git ou inversement via le script `argocd-bidirectional-sync.sh`.
-- **Archivage des manifests** : Crée des archives temporelles des manifests avec `archive_manifests.sh` pour des sauvegardes ou restaurations.
-- **Structure organisée** : Inclut des dossiers pour les manifests, les rollbacks et les scripts.
+## Structure du Projet
+
+```
+.
+├── manifests/
+│   └── base/
+│       └── myapp-argo-application.yaml  # Définition de l'application
+├── rollback/                           # Archives des états précédents
+├── scripts/
+│   ├── archive_manifests.sh            # Sauvegarde des manifests
+│   └── argo-bidirectional-sync.sh      # Synchronisation ArgoCD <--> Git
+├── .gitignore
+├── application.yaml                    # Configuration principale d'ArgoCD
+└── README.md
+```
+
+## Prérequis
+
+### Outils obligatoires
+
+1. **Git** - Système de contrôle de version  
+   [Documentation d'installation](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+
+2. **ArgoCD CLI** - Outil de ligne de commande pour ArgoCD  
+   [Guide d'installation](https://argo-cd.readthedocs.io/en/stable/cli_installation/)
+
+3. **yq** - Processeur YAML pour ligne de commande  
+   [Instructions d'installation](https://github.com/mikefarah/yq#install)
+
+4. **Cluster Kubernetes avec ArgoCD**  
+   - [Installer ArgoCD](https://argo-cd.readthedocs.io/en/stable/getting_started/)
+
+### Vérification des installations
+
+```bash
+git --version
+argocd version
+yq --version
+kubectl version --short
+```
 
 ## Utilisation
-1. Assurez-vous que l'interface CLI d'Argo CD est installée et configurée.
-2. Exécutez `argocd-bidirectional-sync.sh <nom_app> <chemin_repo_git> [nom_branche]` pour synchroniser les configurations.
-3. Utilisez `archive_manifests.sh` pour archiver les manifests dans le dossier `rollback`.
 
-## Remarques
-- Les scripts supposent une structure de répertoire et une configuration Git spécifiques.
-- Testez les scripts dans un environnement non productif avant utilisation.
+### Preparation initiale
+```bash
+# 1. Etablir la connexion ArgoCD
+kubectl port-forward svc/argocd-server -n argocd 8080:443 &  # Lancer en arriere-plan
+argocd login localhost:8080 --username admin --password <password> --insecure
+```
+- Pour le mot de passe ArgoCD :
+    ```bash
+    kubectl get secret -n argocd argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+    ```
+### Script d'archivage (archive_manifests.sh)
+```bash
+cd scripts/
+./archive_manifests.sh
+
+# Resultat attendu :
+# - Cree une archive horodatee dans ../rollback/
+# - Format : manifests_YYYYMMDD_HHMMSS.tar.gz
+# - Contenu : dossier manifests/ complet
+```
+
+### Script de synchronisation (argocd-bidirectional-sync.sh)
+```bash
+# Syntaxe :
+./argocd-bidirectional-sync.sh <APP_NAME> <GIT_REPO_PATH> [BRANCH]
+
+# Exemple complet :
+./argocd-bidirectional-sync.sh my-app .. main
+```
+
+#### Flux d'execution :
+1. Le script demande la direction de synchronisation :
+   ```
+   1) Cluster -> Git (sauvegarde l'etat actuel)
+   2) Git -> Cluster (deploie les changements)
+   ```
+
+2. Pour Cluster -> Git :
+   - Filtre automatiquement les champs Kubernetes
+   - Crée une archive de rollback
+   - Met à jour le dépôt Git
+
+3. Pour Git -> Cluster :
+   - Propose une synchronisation forcée (--force)
+   - Applique la configuration Git sur le cluster
+
+## Notes Techniques
+
+- Les archives contiennent une copie complète du dossier manifests/
+- Format : .tar.gz compressé avec horodatage
+- Les scripts filtrent automatiquement :
+  - Champs managés par Kubernetes
+  - Métadonnées temporaires
+  - Champs de status
