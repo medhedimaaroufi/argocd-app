@@ -37,10 +37,9 @@ NOM_APP="$1"
 CHEMIN_REPO_GIT="$2"
 NOM_BRANCHE="${3:-master}"
 
-# Check if yq is installed
 if ! command -v yq &> /dev/null; then
   echo "[ERREUR] yq doit être installé pour exécuter ce script."
-  echo "Installez-le avec: brew install yq ou sudo apt-get install yq"
+  echo "Installez-le avec: sudo apt-get install yq"
   exit 1
 fi
 
@@ -60,7 +59,6 @@ if [[ "$CHOIX_SYNC" == "1" ]]; then
   MANIFEST_LIVE=$(argocd app manifests "$NOM_APP" --source=live)
   MANIFEST_GIT=$(argocd app manifests "$NOM_APP" --source=git)
   
-  # Filter managed fields from live manifest for comparison
   FILTERED_LIVE=$(filter_managed_fields "$MANIFEST_LIVE")
   FILTERED_GIT=$(filter_managed_fields "$MANIFEST_GIT")
 
