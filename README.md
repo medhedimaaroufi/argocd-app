@@ -1,4 +1,4 @@
-# Scripts Sync et Rollback ArgoCD
+# Scripts de Sync et Rollback ArgoCD
 
 Scripts et configurations pour la gestion des déploiements ArgoCD et rollback
 
