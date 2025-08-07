@@ -1,36 +1,185 @@
-apiVersion: apps/v1
-kind: Deployment
+---
+apiVersion: v1
+data:
+  mongo-url: mongo-service
+kind: ConfigMap
 metadata:
-  name: nginx-deployment
-  labels:
-    app: nginx
-  namespace: default
-spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: nginx
-  template:
-    metadata:
-      labels:
-        app: nginx
-    spec:
-      containers:
-        - name: nginx
-          image: nginx:latest
-          ports:
-            - containerPort: 80
+  annotations:
+    argocd.argoproj.io/tracking-id: myapp-argo-application:/ConfigMap:dev/mongo-config
+  name: mongo-config
+  namespace: dev
+---
+apiVersion: v1
+data:
+  mongo-password: ++++++++++++
+  mongo-user: ++++++++++++
+kind: Secret
+metadata:
+  annotations:
+    argocd.argoproj.io/tracking-id: myapp-argo-application:/Secret:dev/mongo-secret
+  name: mongo-secret
+  namespace: dev
+type: opaque
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx-service
-  namespace: default
+  annotations:
+    argocd.argoproj.io/tracking-id: myapp-argo-application:/Service:dev/mongo-service
+  name: mongo-service
+  namespace: dev
 spec:
-  selector:
-    app: nginx
+  clusterIP: 10.107.234.23
+  clusterIPs:
+    - 10.107.234.23
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
   ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
+    - port: 27017
+      protocol: TCP
+      targetPort: 27017
+  selector:
+    app: mongo
+  sessionAffinity: None
   type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    argocd.argoproj.io/tracking-id: myapp-argo-application:/Service:dev/webapp-service
+  name: webapp-service
+  namespace: dev
+spec:
+  clusterIP: 10.101.31.4
+  clusterIPs:
+    - 10.101.31.4
+  externalTrafficPolicy: Cluster
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+    - nodePort: 30100
+      port: 3000
+      protocol: TCP
+      targetPort: 3000
+  selector:
+    app: webapp
+  sessionAffinity: None
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    argocd.argoproj.io/tracking-id: myapp-argo-application:apps/Deployment:dev/mongo-deployment
+  labels:
+    app: mongo
+  name: mongo-deployment
+  namespace: dev
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: mongo
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: mongo
+    spec:
+      containers:
+        - env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: mongo-user
+                  name: mongo-secret
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: mongo-password
+                  name: mongo-secret
+          image: mongo:5.0
+          imagePullPolicy: IfNotPresent
+          name: mongodb
+          ports:
+            - containerPort: 27017
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    argocd.argoproj.io/tracking-id: myapp-argo-application:apps/Deployment:dev/webapp-deployment
+  labels:
+    app: webapp
+  name: webapp-deployment
+  namespace: dev
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: webapp
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: webapp
+    spec:
+      containers:
+        - env:
+            - name: USER_NAME
+              valueFrom:
+                secretKeyRef:
+                  key: mongo-user
+                  name: mongo-secret
+            - name: USER_PWD
+              valueFrom:
+                secretKeyRef:
+                  key: mongo-password
+                  name: mongo-secret
+            - name: DB_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: mongo-url
+                  name: mongo-config
+          image: nanajanashia/k8s-demo-app:v1.0
+          imagePullPolicy: IfNotPresent
+          name: webapp
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
