@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: http://gitlab.kaisens.fr/kaisensdata/pocs/argocd-sync-rollback.git
+    repoURL: https://github.com/medhedimaaroufi/argocd-app.git
     targetRevision: HEAD
     path: manifests/base
   destination:
