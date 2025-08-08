@@ -11,8 +11,8 @@ metadata:
 ---
 apiVersion: v1
 data:
-  mongo-password: ++++++++++++
-  mongo-user: ++++++++++++
+  mongo-password: ++++++++
+  mongo-user: ++++++++
 kind: Secret
 metadata:
   annotations:
@@ -136,7 +136,7 @@ metadata:
   namespace: dev
 spec:
   progressDeadlineSeconds: 600
-  replicas: 1
+  replicas: 3
   revisionHistoryLimit: 10
   selector:
     matchLabels:
